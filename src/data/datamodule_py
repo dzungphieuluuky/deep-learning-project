@@ -1,0 +1,44 @@
+import torch
+from torch.utils.data import DataLoader, Dataset, random_split
+import lightning.pytorch as pl
+
+class RandomDataset(Dataset):
+    """Dummy dataset to make the code runnable immediately."""
+    def __init__(self, size=1000, shape=(1, 28, 28)):
+        self.len = size
+        self.data = torch.randn(size, *shape)
+        self.targets = torch.randint(0, 10, (size,))
+
+    def __getitem__(self, index):
+        return self.data[index], self.targets[index]
+
+    def __len__(self):
+        return self.len
+
+class DataModule(pl.LightningDataModule):
+    def __init__(self, batch_size: int = 32, num_workers: int = 0):
+        super().__init__()
+        self.save_hyperparameters()
+        self.batch_size = batch_size
+        self.num_workers = num_workers
+
+    def setup(self, stage: str = None):
+        # Real logic: Download, split, transform
+        full_dataset = RandomDataset()
+        self.train_set, self.val_set = random_split(full_dataset, [800, 200])
+
+    def train_dataloader(self):
+        return DataLoader(
+            self.train_set, 
+            batch_size=self.batch_size, 
+            shuffle=True, 
+            num_workers=self.num_workers
+        )
+
+    def val_dataloader(self):
+        return DataLoader(
+            self.val_set, 
+            batch_size=self.batch_size, 
+            shuffle=False, 
+            num_workers=self.num_workers
+        )

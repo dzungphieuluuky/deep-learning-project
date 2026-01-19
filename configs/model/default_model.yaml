@@ -1,0 +1,17 @@
+_target_: src.models.lit_module.ResearchLitModule
+
+optimizer_config:
+  _target_: torch.optim.AdamW
+  lr: 0.0003
+  weight_decay: 0.01
+
+scheduler_config:
+  _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+  T_max: 10
+
+# Architecture specific args
+net:
+  _target_: src.models.components.simple_net.SimpleEinopsNet
+  input_dim: 784
+  hidden_dim: 128
+  output_dim: 10

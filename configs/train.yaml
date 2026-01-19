@@ -1,0 +1,25 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: default_data
+  - model: default_model
+  - trainer: default_trainer
+  - callbacks: default_callbacks
+
+# Global project settings
+project_name: "research-experiment"
+seed: 42
+tags: ["dev", "transformer"]
+
+# Path management
+paths:
+  output_dir: ${hydra:runtime.output_dir}
+  work_dir: ${hydra:runtime.cwd}
+
+# Hydra settings
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: True
