@@ -1,0 +1,22 @@
+# @package _global_.data
+_target_: project_name.data.datasets.CIFAR10DataModule
+
+name: "cifar10"
+root: ${paths.data}
+batch_size: 128
+num_workers: 4
+pin_memory: true
+val_split: 0.1
+augmentation:
+  train:
+    - name: RandomCrop
+      size: 32
+      padding: 4
+    - name: RandomHorizontalFlip
+    - name: Normalize
+      mean: [0.4914, 0.4822, 0.4465]
+      std: [0.2023, 0.1994, 0.2010]
+  val:
+    - name: Normalize
+      mean: [0.4914, 0.4822, 0.4465]
+      std: [0.2023, 0.1994, 0.2010]

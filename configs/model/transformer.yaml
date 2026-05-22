@@ -1,0 +1,13 @@
+# @package _global_.model
+_target_: project_name.models.transformer.TransformerModel
+
+name: "transformer"
+hidden_dim: 256
+num_layers: 6
+num_heads: 8
+mlp_ratio: 4.0
+dropout: 0.1
+attention_dropout: 0.0
+max_seq_len: 512
+vocab_size: 50257
+use_flash_attention: true

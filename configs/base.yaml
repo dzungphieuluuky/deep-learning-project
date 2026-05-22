@@ -1,0 +1,48 @@
+# ── Experiment Identity ──────────────────────────────────────────
+project: "ml_research"
+experiment_name: "baseline"
+run_name: null
+seed: 42
+debug: false
+
+# ── Paths ────────────────────────────────────────────────────────
+paths:
+  root: ${hydra:runtime.cwd}
+  data: ${paths.root}/data
+  output: ${paths.root}/experiments/results/${experiment_name}/${run_name}
+  checkpoints: ${paths.output}/checkpoints
+  logs: ${paths.output}/logs
+
+# ── Training ─────────────────────────────────────────────────----
+training:
+  max_epochs: 100
+  gradient_clip: 1.0
+  accumulate_grad_batches: 1
+  precision: "bf16-mixed"
+  val_check_interval: 1.0
+  log_every_n_steps: 50
+  auto_resume: true
+  resume_from: null
+  early_stopping:
+    enabled: true
+    monitor: "val/loss"
+    patience: 10
+    mode: "min"
+
+# ── Defaults (overridden by sub-configs) ─────────────────────────
+defaults:
+  - model: transformer
+  - data: cifar10
+  - experiment: baseline
+  - _self_
+
+# ── Logging ──────────────────────────────────────────────────────
+logging:
+  use_wandb: true
+  wandb:
+    project: ${project}
+    entity: null
+    tags: []
+    notes: ""
+  use_tensorboard: false
+  console_level: "INFO"
